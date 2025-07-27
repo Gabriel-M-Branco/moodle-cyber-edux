@@ -1,5 +1,0 @@
-{
-  "name": "Meu Codespace",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "postCreateCommand": "chmod +x .devcontainer/install-jetbrains-mono.sh && .devcontainer/install-jetbrains-mono.sh"
-}
