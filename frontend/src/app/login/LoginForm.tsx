@@ -76,7 +76,7 @@ export function LoginForm({
                                         <a
                                             href="#"
                                             tabIndex={-1}
-                                            className="ml-auto text-base underline-offset-4 hover:underline"
+                                            className="ml-auto text-[rgba(222,87,1,255)] text-base underline-offset-4 hover:underline"
                                         >
                                             Esqueceu sua senha?
                                         </a>
@@ -118,8 +118,8 @@ export function LoginForm({
                     </form>
                 </CardContent>
             </Card>
-            <div className="text-white my-3 *:[a]:hover:text-primary text-center text-balance *:[a]:underline *:[a]:underline-offset-4">
-                Copyright © 2025 - Desenvolvido por Gabriel Moreira Branco <br /> e Fabrício Mauro De Oliveira Figueiredo.
+            <div className="text-[rgba(255,173,40,255)] my-3 *:[a]:hover:text-primary text-center text-balance *:[a]:underline *:[a]:underline-offset-4">
+                Copyright © 2025 - Desenvolvido por Gabriel Moreira Branco <br /> e Fabricio Mauro De Oliveira Figueiredo.
             </div>
         </div>
     )
