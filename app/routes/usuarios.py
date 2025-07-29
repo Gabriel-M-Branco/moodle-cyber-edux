@@ -1,37 +1,43 @@
 from fastapi import APIRouter, HTTPException
-from app.models.usuario import Usuario
-from pydantic import BaseModel
+from app.schemas.usuario import UsuarioCreate, LoginData
 from app.database import conectar_banco
 
-router = APIRouter()
+router = APIRouter(prefix="/user", tags=["Usuarios"])
 
-@router.post("/usuarios")
-def cadastrar_usuario(usuario: Usuario):
+@router.post("/cadastrar")
+def cadastrar_usuario(usuario: UsuarioCreate):
     try:
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-        cursor.execute("""
-            INSERT INTO usuarios (nome, cpf, email, nivel_acesso, data_nascimento, login, senha)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        """, (
-            usuario.nome,
-            usuario.cpf,
-            usuario.email,
-            usuario.nivel_acesso,
-            usuario.data_nascimento,
-            usuario.login,
-            usuario.senha
-        ))
-        conexao.commit()
-        conexao.close()
-        return {"mensagem": "Usuário cadastrado com sucesso!"}
+        with conectar_banco() as conexao:
+            cursor = conexao.cursor()
+            cursor.execute(
+                "SELECT id FROM usuarios WHERE cpf = ? OR login = ?",
+                (usuario.cpf, usuario.login)
+            )
+            if cursor.fetchone():
+                raise HTTPException(status_code=400, detail="CPF ou login já cadastrado.")
+
+            cursor.execute("""
+                INSERT INTO usuarios (nome, cpf, email, nivel_acesso, data_nascimento, login, senha)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (
+                usuario.nome,
+                usuario.cpf,
+                usuario.email,
+                usuario.nivel_acesso,
+                usuario.data_nascimento,
+                usuario.login,
+                usuario.senha
+            ))
+
+            conexao.commit()
+
+        return {"status": "sucesso", "mensagem": "Usuário cadastrado com sucesso!"}
+
+    except HTTPException as he:
+        raise he
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
-class LoginData(BaseModel):
-    login: str
-    senha: str
 
 @router.post("/login")
 def login(dados: LoginData):
