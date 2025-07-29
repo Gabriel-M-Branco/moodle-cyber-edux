@@ -6,3 +6,5 @@ class Usuario(BaseModel):
     email: str
     nivel_acesso: int
     data_nascimento: str
+    login: str
+    senha: str
