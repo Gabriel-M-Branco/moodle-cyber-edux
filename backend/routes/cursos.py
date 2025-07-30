@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.database import conectar_banco
-from app.schemas.curso import Curso
+from backend.database import conectar_banco
+from backend.schemas.curso import Curso
 
 router = APIRouter(prefix="/cursos", tags=["Cursos"])
 

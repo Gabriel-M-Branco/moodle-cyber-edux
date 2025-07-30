@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.usuario import UsuarioCreate, LoginData
-from app.database import conectar_banco
+from backend.schemas.usuario import UsuarioCreate, LoginData
+from backend.database import conectar_banco
 
 router = APIRouter(prefix="/user", tags=["Usuarios"])
 

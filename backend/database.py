@@ -1,7 +1,7 @@
 import sqlite3
 
 def conectar_banco():
-    conexao = sqlite3.connect("banco.db")
+    conexao = sqlite3.connect("backend/banco.db")
     cursor = conexao.cursor()
 
     cursor.execute("""
