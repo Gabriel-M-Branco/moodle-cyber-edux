@@ -25,6 +25,26 @@ def conectar_banco():
             carga_horaria INTEGER NOT NULL
         )
     """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS atividades (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            titulo TEXT NOT NULL,
+            descricao TEXT NOT NULL,
+            data_inicio TEXT NOT NULL,
+            hora_inicio TEXT NOT NULL,
+            data_fim TEXT NOT NULL,
+            hora_fim TEXT NOT NULL
+        )
+    """)
+    
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS registroPresencas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            data TEXT NOT NULL,
+            hora TEXT NOT NULL
+        )
+    """)
 
     conexao.commit()
     return conexao

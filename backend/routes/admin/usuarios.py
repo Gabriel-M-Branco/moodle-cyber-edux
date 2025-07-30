@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from backend.schemas.usuario import UsuarioCreate, LoginData
 from backend.database import conectar_banco
 
-router = APIRouter(prefix="/user", tags=["Usuarios"])
+router = APIRouter(prefix="/user", tags=["Admin"])
 
 @router.post("/cadastrar")
 def cadastrar_usuario(usuario: UsuarioCreate):
