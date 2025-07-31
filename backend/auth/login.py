@@ -1,17 +1,14 @@
 from fastapi import APIRouter, HTTPException
 from backend.schemas.usuario import LoginData
-from backend.database import conectar_banco
+from backend.utils.executar_sql import executar
 
 router = APIRouter(prefix="/user", tags=["Login"])
 
 @router.post("/login")
 def login(dados: LoginData):
     try:
-        conexao = conectar_banco()
-        cursor = conexao.cursor()
-        cursor.execute("SELECT * FROM usuarios WHERE login = ? AND senha = ?", (dados.login, dados.senha))
-        resultado = cursor.fetchone()
-        conexao.close()
+        query = "SELECT * FROM usuarios WHERE login = ? AND senha = ?"
+        resultado = executar(query, (dados.login, dados.senha), fetchone=True)
 
         if resultado:
             return {"mensagem": "Login realizado com sucesso!"}
