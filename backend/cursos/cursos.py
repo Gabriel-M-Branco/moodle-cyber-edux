@@ -1,18 +1,19 @@
 from fastapi import APIRouter, HTTPException, Depends
 from backend.schemas.curso import Curso
+from backend.schemas.usuario import NivelAcesso
 from backend.core.security import verificar_nivel
 from backend.utils.executar_sql import executar
 
 router = APIRouter(prefix="/cursos", tags=["Diretor"])
 
-@router.post("/criar", dependencies=[Depends(verificar_nivel(3))])
+@router.post("/criar", dependencies=[Depends(verificar_nivel(NivelAcesso.DIRETOR))])
 def criar_curso(curso: Curso):
     try:
         query = """
-            INSERT INTO cursos (nome, descricao, carga_horaria)
-            VALUES (?, ?, ?)
+            INSERT INTO cursos (nome, descricao, carga_horaria, diretor_id)
+            VALUES (?, ?, ?, ?)
         """
-        params = (curso.nome, curso.descricao, curso.carga_horaria)
+        params = (curso.nome, curso.descricao, curso.carga_horaria, curso.diretor_id)
         executar(query, params)
         return {"mensagem": "Curso cadastrado com sucesso!"}
     except Exception as e:

@@ -2,10 +2,11 @@ from fastapi import APIRouter, HTTPException, Depends
 from backend.schemas.aluno import AlunoDto
 from backend.utils.executar_sql import executar
 from backend.core.security import verificar_nivel
+from backend.schemas.usuario import NivelAcesso
 
 router = APIRouter(prefix="/alunos", tags=["Secretaria"])
 
-@router.post("/criar", dependencies=[Depends(verificar_nivel(2))])
+@router.post("/criar", dependencies=[Depends(verificar_nivel(NivelAcesso.SECRETARIA))])
 def criar_aluno(aluno: AlunoDto):
     try:
         query = """

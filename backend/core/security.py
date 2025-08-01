@@ -1,8 +1,8 @@
 from fastapi import Depends, HTTPException
-from backend.schemas.usuario import LoginData
+from backend.schemas.usuario import LoginData, NivelAcesso
 from backend.database.database import conectar_banco
 
-def verificar_nivel(minimo: int):
+def verificar_nivel(minimo: NivelAcesso):
     def dependencia(dados: LoginData = Depends()):
         conexao = conectar_banco()
         cursor = conexao.cursor()

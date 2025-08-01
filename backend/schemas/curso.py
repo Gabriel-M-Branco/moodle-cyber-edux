@@ -4,3 +4,4 @@ class Curso(BaseModel):
     nome: str
     descricao: str
     carga_horaria: int
+    diretor_id: int

@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from enum import IntEnum
 
 class UsuarioBase(BaseModel):
     nome: str
@@ -19,3 +20,10 @@ class Usuario(UsuarioBase):
 class LoginData(BaseModel):
     login: str
     senha: str
+
+class NivelAcesso(IntEnum):
+    ADMIN = 0
+    DIRETOR = 1
+    SECRETARIA = 2
+    PROFESSOR = 3
+    ALUNO = 4

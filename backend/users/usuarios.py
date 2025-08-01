@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, Depends
-from backend.schemas.usuario import UsuarioCreate, LoginData
+from backend.schemas.usuario import UsuarioCreate, LoginData, NivelAcesso
 from backend.core.security import verificar_nivel
 from backend.utils.executar_sql import executar
 
 router = APIRouter(prefix="/user", tags=["Admin"])
 
-@router.post("/cadastrar", dependencies=[Depends(verificar_nivel(4))])
+@router.post("/cadastrar", dependencies=[Depends(verificar_nivel(NivelAcesso.ADMIN))])
 def cadastrar_usuario(usuario: UsuarioCreate):
     try:
         consulta = "SELECT id FROM usuarios WHERE cpf = ? OR login = ?"

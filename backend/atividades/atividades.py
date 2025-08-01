@@ -2,10 +2,11 @@ from fastapi import APIRouter, HTTPException, Depends
 from backend.schemas.atividade import Atividade
 from backend.core.security import verificar_nivel
 from backend.utils.executar_sql import executar
+from backend.schemas.usuario import NivelAcesso
 
 router = APIRouter(prefix="/atividades", tags=["Professor"])
 
-@router.post("/criar", dependencies=[Depends(verificar_nivel(2))])
+@router.post("/criar", dependencies=[Depends(verificar_nivel(NivelAcesso.PROFESSOR))])
 def cadastrar_atividade(atv: Atividade):
     try:
         query = """
