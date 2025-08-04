@@ -124,3 +124,14 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+
+.card-responsivo {
+    @media (height <= 740px) {
+        padding: 5px;
+    }
+}
+
+.card-login-responsivo{
+    
+}

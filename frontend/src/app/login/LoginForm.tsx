@@ -33,7 +33,7 @@ export function LoginForm({
     }
     return (
         <div className={cn("flex flex-col gap-6", className)} {...props}>
-            <Card className="w-full max-w-lg mx-auto min-w-[500px] p-8 shadow-xl">
+            <Card className="w-[500px] p-8 shadow-xl">
                 <CardHeader className="text-center">
                     <CardTitle className="text-2xl font-bold">Bem vindo</CardTitle>
                     <CardDescription className="font-semibold text-base">
@@ -42,8 +42,8 @@ export function LoginForm({
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit}>
-                        <div className="grid gap-6 mb-4">
-                            <div className="flex flex-col gap-4">
+                        <div className="grid gap-6 mb-3">
+                            <div className="flex flex-col">
                                 <Button variant="outline" className="w-full text-base cursor-pointer my-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path
