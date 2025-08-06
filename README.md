@@ -31,3 +31,11 @@
 - Sistema de coleta de informações socioeconômicas, coleta periódica dos registros escolares, etc.
 
 - Sistema de inscrição automatizado de alunos
+
+
+
+## Intruções para ínicio
+
+npm install
+
+npm run dev

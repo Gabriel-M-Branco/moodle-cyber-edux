@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname, useSearchParams } from "next/navigation"
+import { useState } from "react"
 import {
     NavigationMenu,
     NavigationMenuLink,
@@ -18,12 +19,14 @@ export default function PaginaCurso() {
     const cursoNome = searchParams.get("nome") || "Curso de React"
 
     // Dados simulados do curso
-    const curso = {
+    const [curso, setCurso] = useState({
         id: cursoId,
         nome: cursoNome,
-        descricao: "Aprenda a construir interfaces de usuário modernas e reativas com React, a biblioteca JavaScript mais popular para desenvolvimento front-end.",
         progresso: 35,
         instrutor: "Ana Silva",
+        turma: "Turma 1",
+        turno: "Vespertino",
+        polo: "Cuiabá",
         cargaHoraria: "40 horas",
         modulos: [
             {
@@ -57,6 +60,27 @@ export default function PaginaCurso() {
                 ]
             }
         ]
+    })
+
+    // Função para alternar o status de conclusão de uma aula
+    const toggleAulaConcluida = (aulaId: number) => {
+        setCurso(prevCurso => ({
+            ...prevCurso,
+            modulos: prevCurso.modulos.map(modulo => ({
+                ...modulo,
+                aulas: modulo.aulas.map(aula => 
+                    aula.id === aulaId 
+                        ? { ...aula, concluida: !aula.concluida }
+                        : aula
+                )
+            }))
+        }))
+    }
+
+    // Função para abrir detalhes da aula
+    const abrirDetalhesAula = (aulaId: number, moduloId: number) => {
+        const url = `/atividade?aulaId=${aulaId}&moduloId=${moduloId}&cursoId=${cursoId}&cursoNome=${encodeURIComponent(cursoNome)}`
+        window.open(url, '_blank')
     }
 
     // Criando o menu dinâmico com o nome do curso
@@ -107,86 +131,101 @@ export default function PaginaCurso() {
                     <img src="/images/fotoperfilteste.jpg" className="h-[45px] w-[45px] rounded-full object-cover cursor-pointer" />
                 </div>
             </header>
-            <div className="bg-gray-300 flex-1 w-full px-4 py-6 overflow-hidden">
-                <div className="max-w-7xl mx-auto overflow-y-auto h-full pr-2">
-                    {/* Cabeçalho do curso */}
-                    <div className="flex justify-between items-start mb-6">
-                        <div>
-                            <h1 className="text-3xl font-bold text-gray-800">{curso.nome}</h1>
-                            <p className="text-gray-600 mt-2 max-w-3xl">{curso.descricao}</p>
+            <div className="bg-white w-full overflow-y-auto p-4">
+                {/* Cabeçalho do curso */}
+                <div className="flex justify-between items-start mb-6">
+                    <div>
+                        <h1 className="text-3xl font-bold text-gray-800">{curso.nome}</h1>
 
-                            <div className="flex items-center gap-4 mt-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-600">Instrutor:</span>
-                                    <span className="text-sm text-gray-800">{curso.instrutor}</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-600">Carga Horária:</span>
-                                    <span className="text-sm text-gray-800">{curso.cargaHoraria}</span>
-                                </div>
+                        <div className="flex items-center gap-4 mt-4">
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-600">Instrutor:</span>
+                                <span className="text-sm text-gray-800">{curso.instrutor}</span>
                             </div>
-                        </div>
-
-                        <div className="flex flex-col items-end">
-                            <div className="mb-2">
-                                <span className="text-sm font-medium text-gray-600">Progresso total:</span>
-                                <span className="text-sm font-semibold text-gray-800 ml-1">{curso.progresso}%</span>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-600">Turma:</span>
+                                <span className="text-sm text-gray-800">{curso.turma}</span>
                             </div>
-                            <div className="w-[200px] h-2 bg-gray-200 rounded-full overflow-hidden">
-                                <div
-                                    className="h-full bg-[rgba(79,17,163,255)]"
-                                    style={{ width: `${curso.progresso}%` }}
-                                ></div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-600">Turno:</span>
+                                <span className="text-sm text-gray-800">{curso.turno}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-600">Polo:</span>
+                                <span className="text-sm text-gray-800">{curso.polo}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm font-medium text-gray-600">Carga Horária:</span>
+                                <span className="text-sm text-gray-800">{curso.cargaHoraria}</span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Módulos do curso */}
-                    <div className="space-y-4">
-                        {curso.modulos.map((modulo) => (
-                            <Card key={modulo.id} className="p-6">
-                                <div className="flex justify-between items-center mb-4">
-                                    <h2 className="text-xl font-semibold text-gray-800 flex items-center">
-                                        {modulo.concluido && (
-                                            <span className="flex w-5 h-5 rounded-full bg-green-500 mr-2 items-center justify-center text-white text-xs">✓</span>
-                                        )}
-                                        Módulo {modulo.id}: {modulo.titulo}
-                                    </h2>
-                                    <Button
-                                        variant={modulo.concluido ? "outline" : "default"}
-                                        className={modulo.concluido ? "border-gray-300 text-gray-600" : "bg-[rgba(79,17,163,255)] hover:bg-[rgba(60,14,130,255)]"}
+                    <div className="flex flex-col items-end">
+                        <div className="mb-2">
+                            <span className="text-sm font-medium text-gray-600">Progresso total:</span>
+                            <span className="text-sm font-semibold text-gray-800 ml-1">{curso.progresso}%</span>
+                        </div>
+                        <div className="w-[130px] h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-[rgba(79,17,163,255)]"
+                                style={{ width: `${curso.progresso}%` }}
+                            ></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Módulos do curso */}
+                <div className="space-y-4">
+                    {curso.modulos.map((modulo) => (
+                        <Card key={modulo.id} className="p-6 border border-gray-200 shadow-sm bg-white">
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-xl font-semibold text-gray-800 flex items-center">
+                                    {modulo.concluido && (
+                                        <span className="flex w-5 h-5 rounded-full bg-green-500 mr-2 items-center justify-center text-white text-xs">✓</span>
+                                    )}
+                                    Módulo {modulo.id}: {modulo.titulo}
+                                </h2>
+                            </div>
+
+                            <div className="space-y-2">
+                                {modulo.aulas.map((aula) => (
+                                    <div
+                                        key={aula.id}
+                                        className={`flex justify-between items-center p-3 rounded border border-gray-200 transition-all duration-200 cursor-pointer ${
+                                            aula.concluida 
+                                                ? 'bg-gray-100 opacity-60 hover:opacity-80' 
+                                                : 'bg-white hover:bg-gray-50 hover:shadow-sm'
+                                        }`}
+                                        onClick={() => abrirDetalhesAula(aula.id, modulo.id)}
                                     >
-                                        {modulo.concluido ? "Revisar" : "Continuar"}
-                                    </Button>
-                                </div>
-
-                                <div className="space-y-2">
-                                    {modulo.aulas.map((aula) => (
-                                        <div
-                                            key={aula.id}
-                                            className={`flex justify-between items-center p-3 rounded ${aula.concluida ? 'bg-gray-100' : 'bg-white'} border border-gray-200`}
-                                        >
-                                            <div className="flex items-center">
-                                                <div className={`w-4 h-4 rounded-full ${aula.concluida ? 'bg-green-500' : 'bg-gray-300'} mr-3`}></div>
-                                                <span className={`${aula.concluida ? 'text-gray-600' : 'text-gray-800'}`}>
-                                                    {aula.titulo}
-                                                </span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-xs text-gray-500">{aula.duracao}</span>
-                                                <Button
-                                                    variant="ghost"
-                                                    className="h-8 px-2 text-xs hover:bg-gray-100"
-                                                >
-                                                    {aula.concluida ? "Rever" : "Assistir"}
-                                                </Button>
-                                            </div>
+                                        <div className="flex items-center">
+                                            <div 
+                                                className={`w-4 h-4 rounded-full cursor-pointer transition-colors duration-200 mr-3 ${
+                                                    aula.concluida ? 'bg-green-500' : 'bg-gray-300 hover:bg-gray-400'
+                                                }`}
+                                                onClick={(e) => {
+                                                    e.stopPropagation() // Evita que o clique no círculo abra a atividade
+                                                    toggleAulaConcluida(aula.id)
+                                                }}
+                                            ></div>
+                                            <span className={`${aula.concluida ? 'text-gray-500' : 'text-gray-800'}`}>
+                                                {aula.titulo}
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
-                            </Card>
-                        ))}
-                    </div>
+                                        <div className="flex items-center gap-2">
+                                            <span className={`text-sm ${aula.concluida ? 'text-gray-400' : 'text-gray-600'}`}>
+                                                {aula.duracao}
+                                            </span>
+                                            <span className={`text-sm ${aula.concluida ? 'text-gray-400' : 'text-blue-600'} font-medium`}>
+                                                Acessar →
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </Card>
+                    ))}
                 </div>
             </div>
         </div>

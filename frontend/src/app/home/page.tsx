@@ -21,7 +21,6 @@ export default function PaginaInicial() {
         { href: "/configuracoes", label: "Configurações" }
     ]
     
-    // Dados simulados dos cursos
     const cursos = [
         { id: "1", nome: "Curso de React", descricao: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, suscipit?", progresso: 75 },
         { id: "2", nome: "Curso de Node.js", descricao: "Backend com JavaScript", progresso: 45 },
@@ -78,9 +77,8 @@ export default function PaginaInicial() {
                     <img src="/images/fotoperfilteste.jpg" className="h-[45px] w-[45px] rounded-full object-cover cursor-pointer" />
                 </div>
             </header>
-            <div className="bg-gray-300 flex-1 w-full px-0 pt-0 pb-2 overflow-hidden">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-6 gap-y-6 overflow-y-auto h-full pl-4 pr-4 pt-4 content-start">
-                    {/* Renderizando os cursos do array de dados */}
+            <div className="bg-gray-300 flex-1 w-full px-0 pt-0 pb-0 overflow-hidden">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-x-6 gap-y-6 overflow-y-auto h-full p-4 content-start">
                     {cursos.map((curso) => (
                         <div key={curso.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 flex flex-col justify-between h-[170px]">
                             <div className="flex-1">
