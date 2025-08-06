@@ -7,3 +7,5 @@ class Atividade(BaseModel):
     hora_inicio: str
     data_fim: str
     hora_fim: str
+    curso_id: int
+    professor_id: int

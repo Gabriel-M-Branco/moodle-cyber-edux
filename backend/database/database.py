@@ -82,6 +82,53 @@ def criar_tabelas(conexao):
             FOREIGN KEY (atividade_id) REFERENCES atividades(id),
             FOREIGN KEY (registrado_por) REFERENCES usuarios(id)
         )
+        """,
+
+        """
+        CREATE TABLE IF NOT EXISTS questoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            atividade_id INTEGER NOT NULL,
+            enunciado TEXT NOT NULL,
+            tipo TEXT NOT NULL,
+            FOREIGN KEY (atividade_id) REFERENCES atividades(id)
+        )
+        """,
+
+        """
+        CREATE TABLE IF NOT EXISTS notas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            aluno_id INTEGER NOT NULL,
+            atividade_id INTEGER NOT NULL,
+            nota REAL NOT NULL,
+            observacao TEXT,
+            data_avaliacao TEXT DEFAULT (datetime('now')),
+            FOREIGN KEY (aluno_id) REFERENCES alunos(id),
+            FOREIGN KEY (atividade_id) REFERENCES atividades(id)
+        )
+        """,
+
+        """
+        CREATE TABLE IF NOT EXISTS respostas_questoes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            aluno_id INTEGER NOT NULL,
+            questao_id INTEGER NOT NULL,
+            alternativa_id INTEGER,
+            resposta_texto TEXT,
+            data_resposta TEXT NOT NULL,
+            FOREIGN KEY (aluno_id) REFERENCES alunos(id),
+            FOREIGN KEY (questao_id) REFERENCES questoes(id),
+            FOREIGN KEY (alternativa_id) REFERENCES alternativas(id)
+        )
+        """,
+
+        """
+        CREATE TABLE IF NOT EXISTS alternativas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            questao_id INTEGER NOT NULL,
+            texto TEXT NOT NULL,
+            correta INTEGER NOT NULL,
+            FOREIGN KEY (questao_id) REFERENCES questoes(id)
+        )
         """
     ]
 
